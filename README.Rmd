@@ -54,7 +54,7 @@ The workbook's `Definitions` sheet records the following provenance.
 Install the packages in an R session:
 
 ```r
-install.packages(c("readxl", "ggplot2", "testcorr", "urca", "quantreg"))
+install.packages(c("ggplot2","readxl", "testcorr", "urca", "quantreg"))
 ```
 
 ## Run the analysis

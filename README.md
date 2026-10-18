@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 ETX5651
 ================
 
@@ -12,6 +7,7 @@ combines layer 1 linear dependence analysis and layer 2 quantile matrix
 autoregressive connectedness analysis.
 
 ## Repository contents
+
 | File or directory | Purpose |
 |----|----|
 | `Ass.Rproj` | RStudio project configuration |
@@ -58,7 +54,7 @@ The workbook’s `Definitions` sheet records the following provenance.
 Install the packages in an R session:
 
 ``` r
-install.packages(c("ggplot2", "testcorr", "urca", "quantreg"))
+install.packages(c("ggplot2","readxl", "testcorr", "urca", "quantreg"))
 ```
 
 ## Run the analysis
