@@ -1,7 +1,7 @@
 # ETX5651 Layer 1
 # 1. Settings fixed before examining significance ------------------------------
 args <- commandArgs(trailingOnly = TRUE)
-input_file <- if (length(args) >= 1L) args[1L] else "data.csv"
+input_file <- if (length(args) >= 1L) args[1L] else "data.xlsx"
 output_dir <- if (length(args) >= 2L) args[2L] else "results_layer1"
 L <- 8L                         # two years of quarterly dynamics
 selected_lags <- c(1L, 8L)
@@ -9,12 +9,12 @@ alpha <- 0.05
 lambda <- 0                     # unthresholded GLP Q; see numerical note below
 install_missing <- TRUE
 
-packages <- c("testcorr", "urca", "ggplot2")
+packages <- c("testcorr", "urca", "ggplot2", "readxl")
 missing <- packages[!vapply(packages, requireNamespace, logical(1), quietly = TRUE)]
 if (length(missing) && install_missing)
   install.packages(missing, repos = "https://cloud.r-project.org")
 if (any(!vapply(packages, requireNamespace, logical(1), quietly = TRUE)))
-  stop("Install testcorr and urca before running this script.")
+  stop("Install missing packages: ", paste(packages[!vapply(packages, requireNamespace, logical(1), quietly = TRUE)], collapse = ", "))
 if (utils::packageVersion("testcorr") < "0.3.0")
   stop("Please update testcorr to version 0.3.0 or later.")
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
@@ -23,8 +23,15 @@ write_csv <- function(x, name, directory = output_dir, row.names = FALSE) {
 }
 
 # 2. Read, validate and stack the four variables -------------------------------
-d <- read.csv(input_file, check.names = FALSE, stringsAsFactors = FALSE,
-              na.strings = c("", "NA", "NaN", "."))
+if (grepl("\\.xlsx$", input_file, ignore.case = TRUE)) {
+  d <- as.data.frame(readxl::read_excel(
+    input_file, sheet = "Data", na = c("", "NA", "NaN", "."),
+    .name_repair = "minimal"
+  ))
+} else {
+  d <- read.csv(input_file, check.names = FALSE, stringsAsFactors = FALSE,
+                na.strings = c("", "NA", "NaN", "."))
+}
 source_columns <- c("us_gdp_growth_qoq_pct", "us_nfci",
                     "aus_gdp_growth_qoq_pct", "aus_fci")
 

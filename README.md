@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ETX5651
 ================
 
@@ -7,7 +12,6 @@ combines layer 1 linear dependence analysis and layer 2 quantile matrix
 autoregressive connectedness analysis.
 
 ## Repository contents
-
 | File or directory | Purpose |
 |----|----|
 | `Ass.Rproj` | RStudio project configuration |
