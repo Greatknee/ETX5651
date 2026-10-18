@@ -1,0 +1,109 @@
+---
+title: "ETX5651"
+output: github_document
+---
+
+R scripts for ETX5651 assignment, analysis of quarterly GDP growth and
+financial conditions in the United States and Australia. The project
+combines layer 1 linear dependence analysis and layer 2 quantile matrix autoregressive connectedness analysis.
+
+## Repository contents
+
+| File or directory | Purpose |
+|----|----|
+| `Ass.Rproj` | RStudio project configuration |
+| `layer1.R` | Data validation, descriptive statistics, stationarity diagnostics and self-normalized correlation tests |
+| `layer2_qmar.R` | Quantile MAR estimation, generalized variance decompositions and two connectedness figures |
+| `data.csv` | Analysis-ready quarterly data used by both scripts by default |
+| `US_Australia_GDP_FCI_quarterly.xlsx` | Workbook with `Quarterly data`, `Quarterly inputs` and `Definitions` sheets |
+| `results_layer1/` | Existing descriptive, stationarity and correlation outputs for layer 1 |
+| `results_layer2/` | Existing connectedness and quantile-asymmetry PDFs for layer 2 |
+
+## Data
+
+`data.csv` contains **176 observations, from 1976Q4 to 2020Q3**, with
+consecutive, unique calendar quarters and no missing-value markers in
+the four analysis columns.
+
+| Column | Meaning | Treatment in the scripts |
+|----|----|----|
+| `quarter` | Calendar quarter, formatted as `YYYYQ1` through `YYYYQ4` | Used for ordering and continuity checks |
+| `us_gdp_growth_qoq_pct` | US GDP growth, percent quarter on quarter | Used as supplied |
+| `us_nfci` | US National Financial Conditions Index | Used in levels |
+| `aus_gdp_growth_qoq_pct` | Australian GDP growth, percent quarter on quarter | Used as supplied |
+| `aus_fci` | Australian Financial Conditions Index | Used in levels |
+
+GDP growth is already expressed in percentage units and is not annualized.
+
+### Provenance recorded in the workbook
+
+The workbook's `Definitions` sheet records the following provenance.
+
+- US GDP: BEA via FRED, series `GDPC1`.
+- Australian GDP: IMF International Financial Statistics via FRED,
+  series `NGDPRSAXDCAUQ`.
+- US financial conditions: Chicago Fed NFCI via FRED, aggregated as the
+  arithmetic mean of weekly observations whose Friday falls in each
+  quarter.
+- Australian financial conditions: Hartigan and Wright (2021), RBA
+  Research Discussion Paper 2021-03, supplementary file
+  `Data/fci_q_1_s_1_p_1_rdp.csv`.
+
+## Requirements
+
+Install the packages in an R session:
+
+```r
+install.packages(c("ggplot2", "testcorr", "urca", "quantreg"))
+```
+
+## Run the analysis
+
+Open `Ass.Rproj` in RStudio, or use a terminal with the repository root
+as the working directory. The following examples use new output
+directory names to preserve the bundled results:
+
+```sh
+Rscript layer1.R data.csv results_layer1_new
+Rscript layer2_qmar.R data.csv results_layer2_new
+```
+
+Without arguments, both scripts read `data.csv`; output defaults are
+`results_layer1` and `results_layer2`.
+
+## Layer 1: correlation diagnostics
+
+`layer1.R` stacks variables as
+`(US_GDP, US_NFCI, AUS_GDP, AUS_FCI)` and performs:
+
+- Quarter validation, sorting, numeric/finite-value checks and
+  constant-series checks.
+- Descriptive statistics and median/MAD-based outlier flags; flagged
+  observations are retained.
+- ADF tests with an intercept and BIC lag selection up to eight
+  quarters, plus KPSS level-stationarity tests with truncation lag
+  eight.
+- Self-normalized ACF tests for all four series and CCF tests for all
+  six pairs in both directions, using `testcorr`.
+- Individual-lag inference, with lags 1 and 8 highlighted, and
+  cumulative directional tests over lags 1–8. The significance level is
+  5% and `lambda = 0`.
+
+Root outputs include `stacked_data.csv`, summary statistics,
+missing/outlier reports, the metadata template, stationarity
+diagnostics, four ADF text summaries and `series.pdf`. The
+`full_sample/` subdirectory contains the correlation matrix, individual
+and cumulative test tables, `ACF_SN.pdf`, `CCF_both_directions_SN.pdf`
+and `analysis.rds`.
+
+## Layer 2: quantile connectedness
+
+`layer2_qmar.R` uses the order `(US_GDP, AUS_GDP, US_NFCI, AUS_FCI)`,
+corresponding to column stacking of a country-by-variable matrix.
+
+It writes two files under the selected output directory:
+
+| Output | Interpretation |
+|----|----|
+| `figures/connectedness_heatmap.pdf` | Eight-quarter variance shares at each quantile; rows are recipients, columns are source innovations, and each row sums to 100%. |
+| `figures/quantile_asymmetry.pdf` | Lower-quantile minus median financial-to-growth share over horizons 1–20 quarters, in percentage points. |

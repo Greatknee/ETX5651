@@ -1,0 +1,5 @@
+"variable","original_column","unit","transformation","source","definition_to_verify"
+"US_GDP","us_gdp_growth_qoq_pct","percent q/q, not annualized","as supplied","TODO: verify GDP provider and series ID","real/nominal; seasonal adjustment; vintage"
+"US_NFCI","us_nfci","index","level as supplied","US NFCI: verify provider, vintage and quarterly aggregation","quarterly mean/end-quarter; sign convention"
+"AUS_GDP","aus_gdp_growth_qoq_pct","percent q/q, not annualized","as supplied","TODO: verify GDP provider and series ID","real/nominal; seasonal adjustment; vintage"
+"AUS_FCI","aus_fci","index","level as supplied","TODO: identify Australian FCI construction and source","quarterly aggregation; whether higher means tighter"
