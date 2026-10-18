@@ -1,8 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 ETX5651
 ================
 
@@ -25,7 +20,7 @@ autoregressive connectedness analysis.
 
 ## Data
 
-`data.csv` contains **176 observations, from 1976Q4 to 2020Q3**, with
+`data.xlsx` contains **176 observations, from 1976Q4 to 2020Q3**, with
 consecutive, unique calendar quarters and no missing-value markers in
 the four analysis columns.
 

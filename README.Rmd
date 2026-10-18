@@ -21,7 +21,7 @@ combines layer 1 linear dependence analysis and layer 2 quantile matrix autoregr
 
 ## Data
 
-`data.csv` contains **176 observations, from 1976Q4 to 2020Q3**, with
+`data.xlsx` contains **176 observations, from 1976Q4 to 2020Q3**, with
 consecutive, unique calendar quarters and no missing-value markers in
 the four analysis columns.
 
