@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ETX5651
 ================
 
@@ -12,8 +17,8 @@ autoregressive connectedness analysis.
 |----|----|
 | `Ass.Rproj` | RStudio project configuration |
 | `layer1.R` | Data validation, descriptive statistics, stationarity diagnostics and self-normalized correlation tests |
-| `layer2_qmar.R` | Quantile MAR estimation, generalized variance decompositions and two connectedness figures |
-| `data.csv` | Analysis-ready quarterly data used by both scripts by default |
+| `layer2.R` | Quantile MAR estimation, generalized variance decompositions and two connectedness figures |
+| `data.xlsx` | Analysis-ready quarterly data used by both scripts by default |
 | `US_Australia_GDP_FCI_quarterly.xlsx` | Workbook with `Quarterly data`, `Quarterly inputs` and `Definitions` sheets |
 | `results_layer1/` | Existing descriptive, stationarity and correlation outputs for layer 1 |
 | `results_layer2/` | Existing connectedness and quantile-asymmetry PDFs for layer 2 |
@@ -54,7 +59,7 @@ The workbook’s `Definitions` sheet records the following provenance.
 Install the packages in an R session:
 
 ``` r
-install.packages(c("ggplot2","readxl", "testcorr", "urca", "quantreg"))
+install.packages(c("readxl", "ggplot2", "testcorr", "urca", "quantreg"))
 ```
 
 ## Run the analysis
